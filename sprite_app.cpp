@@ -13,7 +13,7 @@ SpriteApp::SpriteApp(gef::Platform& platform) :
 	x_speed = 50.0f;
 	y_speed = 0;
 	z_speed = 0;
-
+	timer = 0.0f;
 }
 
 void SpriteApp::Init()
@@ -31,13 +31,19 @@ void SpriteApp::Init()
 		sprites[i] = initSprite(platform_.width() * 0.5f, platform_.height() * 0.09f * (i + 1), 0.0f, 32.0f, 32.0f);
 	}*/
 
-	for (int i = 0; i < 10; ++i)
-	{
-		float randXPos = rand() % 920 + 40;		// Random num between 40-920
-		float randYPos = rand() % 504 + 40;		// Random num between 40-504
+	//for (int i = 0; i < 10; ++i)
+	//{
+	//	float randXPos = rand() % 920 + 40;		// Random num between 40-920
+	//	float randYPos = rand() % 504 + 40;		// Random num between 40-504
 
-		spritesV.push_back(initSprite(randXPos, randYPos, 0.0f, 32.0f, 32.0f));
-	}
+	//	spritesV.push_back(initSprite(randXPos, randYPos, 0.0f, 32.0f, 32.0f));
+	//}
+
+	// Draw the first sprite.
+	float randXPos = rand() % 920 + 40;		// Random num between 40-920
+	float randYPos = rand() % 504 + 40;		// Random num between 40-504
+
+	spritesV.push_back(initSprite(randXPos, randYPos, 0.0f, 32.0f, 32.0f));
 }
 
 gef::Sprite SpriteApp::initSprite(float xPos, float yPos, float zPos, float width, float height)
@@ -77,11 +83,29 @@ bool SpriteApp::Update(float frame_time)
 	{
 		sprites[i].set_position(sprites[i].position() + (gef::Vector4(x_speed * 0.5f, y_speed, z_speed) * frame_time));
 	}*/
+	
+	float randXPos = rand() % 880 + 40;		// Random num between 40-920
+	float randYPos = rand() % 464 + 40;		// Random num between 40-504
 
-	for (int i = 0; i < 10; ++i)
+	timer += frame_time;
+
+	if (timer > 0.5f)
 	{
-		spritesV[i].set_position(spritesV[i].position() + (gef::Vector4(x_speed * 0.5f, y_speed, z_speed) * frame_time));
+		spritesV.push_back(initSprite(randXPos, randYPos, 0.0f, 32.0f, 32.0f));
+		timer = 0.0f;
 	}
+
+
+	/*for (int i = 0; i < 10; ++i)
+	{
+		timer += frame_time;
+
+		if (timer > 0.5f)
+		{
+			spritesV[i].set_position(spritesV[i].position() + (gef::Vector4(x_speed * 0.5f, y_speed, z_speed) * frame_time));
+			timer = 0.0f;
+		}	
+	}*/
 
 
 	// update the x-axis on the COPY of the current position
@@ -107,7 +131,7 @@ void SpriteApp::Render()
 		sprite_renderer_->DrawSprite(sprites[i]);
 	}*/
 
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < spritesV.size(); ++i)
 	{
 		sprite_renderer_->DrawSprite(spritesV[i]);
 	}

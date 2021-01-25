@@ -33,6 +33,7 @@ private:
 
 	float fps_;
 	float x_speed, y_speed, z_speed;
+	float timer = 0.0f;
 
 	/*gef::Sprite sprite_1;
 	gef::Sprite sprite_2;*/
