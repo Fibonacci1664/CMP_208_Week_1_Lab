@@ -24,6 +24,7 @@ public:
 	void Render();
 private:
 	void InitFont();
+	void initSprite(gef::Sprite* sprite, float xPos, float yPos, float zPos, float width, float height);
 	void CleanUpFont();
 	void DrawHUD();
 
@@ -32,7 +33,9 @@ private:
 
 	float fps_;
 	float x_speed, y_speed, z_speed;
-	gef::Sprite my_sprite_;
+
+	gef::Sprite sprite_1;
+	gef::Sprite sprite_2;
 };
 
 #endif // _sprite_app_H

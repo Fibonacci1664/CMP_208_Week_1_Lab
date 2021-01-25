@@ -11,7 +11,7 @@ SpriteApp::SpriteApp(gef::Platform& platform) :
 	font_(NULL)
 {
 	x_speed = 50.0f;
-	y_speed = 0;
+	y_speed = 25.0f;
 	z_speed = 0;
 
 }
@@ -23,9 +23,15 @@ void SpriteApp::Init()
 
 	InitFont();
 
-	my_sprite_.set_position(platform_.width()*0.5f, platform_.height()*0.5f, 0.0f);
-	my_sprite_.set_width(32.0f);
-	my_sprite_.set_height(32.0f);
+	initSprite(&sprite_1, platform_.width() * 0.5f, platform_.height() * 0.5f, 0.0f, 32.0f, 32.0f);
+	initSprite(&sprite_2, platform_.width() * 0.75f, platform_.height() * 0.25f, 0.0f, 32.0f, 32.0f);	
+}
+
+void SpriteApp::initSprite(gef::Sprite* sprite, float xPos, float yPos, float zPos, float width, float height)
+{
+	sprite->set_position(xPos, yPos, zPos);
+	sprite->set_width(width);
+	sprite->set_height(height);
 }
 
 void SpriteApp::CleanUp()
@@ -47,7 +53,8 @@ bool SpriteApp::Update(float frame_time)
 	// get a copy of the current position of the sprite
 	//gef::Vector4 sprite_position = my_sprite_.position();
 
-	my_sprite_.set_position(my_sprite_.position() + (gef::Vector4(x_speed, y_speed, z_speed) * frame_time));
+	sprite_1.set_position(sprite_1.position() + (gef::Vector4(x_speed * 0.5f, y_speed, z_speed) * frame_time));
+	sprite_2.set_position(sprite_2.position() - (gef::Vector4(x_speed * 1.5f, -y_speed, z_speed) * frame_time));
 
 	// update the x-axis on the COPY of the current position
 	//sprite_position.set_x(sprite_position.x() + 1);
@@ -64,7 +71,8 @@ void SpriteApp::Render()
 	sprite_renderer_->Begin();
 
 	// draw my sprite here
-	sprite_renderer_->DrawSprite(my_sprite_);
+	sprite_renderer_->DrawSprite(sprite_1);
+	sprite_renderer_->DrawSprite(sprite_2);
 
 	DrawHUD();
 	sprite_renderer_->End();
@@ -92,11 +100,11 @@ void SpriteApp::DrawHUD()
 		// display frame rate
 		font_->RenderText(
 			sprite_renderer_,										// sprite renderer to draw the letters
-			gef::Vector4(650.0f, 510.0f, -0.9f),					// position on screen
+			gef::Vector4(50.0f, 510.0f, -0.9f),						// position on screen
 			1.0f,													// scale
 			0xffffffff,												// colour ABGR
 			gef::TJ_LEFT,											// justification
-			"FPS: %.1f xpos: %.1f", fps_, my_sprite_.position().x()	// string of text to render
+			"FPS: %.1f Sprite 1 xPos: %.1f \t Sprite 2 xPos: %.1f", fps_, sprite_1.position().x(), sprite_2.position().x()	// string of text to render
 			);
 
 		// any variables used in formatted text string http://www.cplusplus.com/reference/cstdio/printf/
