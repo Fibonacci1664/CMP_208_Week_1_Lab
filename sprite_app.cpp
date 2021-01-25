@@ -33,7 +33,10 @@ void SpriteApp::Init()
 
 	for (int i = 0; i < 10; ++i)
 	{
-		spritesV.push_back(initSprite(platform_.width() * 0.5f, platform_.height() * 0.09f * (i + 1), 0.0f, 32.0f, 32.0f));
+		float randXPos = rand() % 920 + 40;		// Random num between 40-920
+		float randYPos = rand() % 504 + 40;		// Random num between 40-504
+
+		spritesV.push_back(initSprite(randXPos, randYPos, 0.0f, 32.0f, 32.0f));
 	}
 }
 
