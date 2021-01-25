@@ -37,7 +37,9 @@ private:
 	/*gef::Sprite sprite_1;
 	gef::Sprite sprite_2;*/
 
-	gef::Sprite sprites[10];
+	//gef::Sprite sprites[10];
+
+	std::vector<gef::Sprite> spritesV;
 };
 
 #endif // _sprite_app_H

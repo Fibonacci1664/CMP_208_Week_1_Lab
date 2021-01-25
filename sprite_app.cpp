@@ -26,9 +26,14 @@ void SpriteApp::Init()
 	/*initSprite(&sprite_1, platform_.width() * 0.5f, platform_.height() * 0.5f, 0.0f, 32.0f, 32.0f);
 	initSprite(&sprite_2, platform_.width() * 0.75f, platform_.height() * 0.25f, 0.0f, 32.0f, 32.0f);*/
 
-	for (int i = 0; i < 10; ++i)
+	/*for (int i = 0; i < 10; ++i)
 	{
 		sprites[i] = initSprite(platform_.width() * 0.5f, platform_.height() * 0.09f * (i + 1), 0.0f, 32.0f, 32.0f);
+	}*/
+
+	for (int i = 0; i < 10; ++i)
+	{
+		spritesV.push_back(initSprite(platform_.width() * 0.5f, platform_.height() * 0.09f * (i + 1), 0.0f, 32.0f, 32.0f));
 	}
 }
 
@@ -65,9 +70,14 @@ bool SpriteApp::Update(float frame_time)
 	//sprite_1.set_position(sprite_1.position() + (gef::Vector4(x_speed * 0.5f, y_speed, z_speed) * frame_time));
 	//sprite_2.set_position(sprite_2.position() - (gef::Vector4(x_speed * 1.5f, -y_speed, z_speed) * frame_time));
 
-	for (int i = 0; i < 10; ++i)
+	/*for (int i = 0; i < 10; ++i)
 	{
 		sprites[i].set_position(sprites[i].position() + (gef::Vector4(x_speed * 0.5f, y_speed, z_speed) * frame_time));
+	}*/
+
+	for (int i = 0; i < 10; ++i)
+	{
+		spritesV[i].set_position(spritesV[i].position() + (gef::Vector4(x_speed * 0.5f, y_speed, z_speed) * frame_time));
 	}
 
 
@@ -89,9 +99,14 @@ void SpriteApp::Render()
 	/*sprite_renderer_->DrawSprite(sprite_1);
 	sprite_renderer_->DrawSprite(sprite_2);*/
 
-	for (int i = 0; i < 10; ++i)
+	/*for (int i = 0; i < 10; ++i)
 	{
 		sprite_renderer_->DrawSprite(sprites[i]);
+	}*/
+
+	for (int i = 0; i < 10; ++i)
+	{
+		sprite_renderer_->DrawSprite(spritesV[i]);
 	}
 
 	DrawHUD();
@@ -124,7 +139,7 @@ void SpriteApp::DrawHUD()
 			1.0f,													// scale
 			0xffffffff,												// colour ABGR
 			gef::TJ_LEFT,											// justification
-			"FPS: %.1f Sprite 1 xPos: %.1f", fps_, sprites[0].position().x()	// string of text to render
+			"FPS: %.1f Sprite 1 xPos: %.1f", fps_, spritesV[0].position().x()	// string of text to render
 			);
 		
 		// any variables used in formatted text string http://www.cplusplus.com/reference/cstdio/printf/
