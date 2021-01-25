@@ -14,6 +14,7 @@ SpriteApp::SpriteApp(gef::Platform& platform) :
 	y_speed = 0;
 	z_speed = 0;
 	timer = 0.0f;
+	totalTime = 0.0f;
 }
 
 void SpriteApp::Init()
@@ -42,17 +43,17 @@ void SpriteApp::Init()
 	// Draw the first sprite.
 	float randXPos = rand() % 920 + 40;		// Random num between 40-920
 	float randYPos = rand() % 504 + 40;		// Random num between 40-504
-
+	
 	spritesV.push_back(initSprite(randXPos, randYPos, 0.0f, 32.0f, 32.0f));
 }
 
-gef::Sprite SpriteApp::initSprite(float xPos, float yPos, float zPos, float width, float height)
+gef::Sprite* SpriteApp::initSprite(float xPos, float yPos, float zPos, float width, float height)
 {
-	gef::Sprite sprite;
+	gef::Sprite* sprite = new gef::Sprite;
 
-	sprite.set_position(xPos, yPos, zPos);
-	sprite.set_width(width);
-	sprite.set_height(height);
+	sprite->set_position(xPos, yPos, zPos);
+	sprite->set_width(width);
+	sprite->set_height(height);
 
 	return sprite;
 }
@@ -88,11 +89,18 @@ bool SpriteApp::Update(float frame_time)
 	float randYPos = rand() % 464 + 40;		// Random num between 40-504
 
 	timer += frame_time;
+	totalTime += frame_time;
 
 	if (timer > 0.5f)
 	{
 		spritesV.push_back(initSprite(randXPos, randYPos, 0.0f, 32.0f, 32.0f));
 		timer = 0.0f;
+	}
+
+	if (totalTime > 10.0f)
+	{
+		spritesV.erase(spritesV.begin(), spritesV.end());
+		totalTime = 0.0f;
 	}
 
 
@@ -133,7 +141,7 @@ void SpriteApp::Render()
 
 	for (int i = 0; i < spritesV.size(); ++i)
 	{
-		sprite_renderer_->DrawSprite(spritesV[i]);
+		sprite_renderer_->DrawSprite(*spritesV[i]);
 	}
 
 	DrawHUD();
@@ -166,8 +174,7 @@ void SpriteApp::DrawHUD()
 			1.0f,													// scale
 			0xffffffff,												// colour ABGR
 			gef::TJ_LEFT,											// justification
-			"FPS: %.1f Sprite 1 xPos: %.1f", fps_, spritesV[0].position().x()	// string of text to render
-			);
+			"FPS: %.1f", fps_);										// string of text to render
 		
 		// any variables used in formatted text string http://www.cplusplus.com/reference/cstdio/printf/
 	}

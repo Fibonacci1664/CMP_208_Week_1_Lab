@@ -24,7 +24,7 @@ public:
 	void Render();
 private:
 	void InitFont();
-	gef::Sprite initSprite(float xPos, float yPos, float zPos, float width, float height);
+	gef::Sprite* initSprite(float xPos, float yPos, float zPos, float width, float height);
 	void CleanUpFont();
 	void DrawHUD();
 
@@ -33,14 +33,15 @@ private:
 
 	float fps_;
 	float x_speed, y_speed, z_speed;
-	float timer = 0.0f;
+	float timer;
+	float totalTime;
 
 	/*gef::Sprite sprite_1;
 	gef::Sprite sprite_2;*/
 
 	//gef::Sprite sprites[10];
 
-	std::vector<gef::Sprite> spritesV;
+	std::vector<gef::Sprite*> spritesV;
 };
 
 #endif // _sprite_app_H
