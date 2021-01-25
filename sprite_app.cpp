@@ -10,6 +10,10 @@ SpriteApp::SpriteApp(gef::Platform& platform) :
 	sprite_renderer_(NULL),
 	font_(NULL)
 {
+	x_speed = 50.0f;
+	y_speed = 0;
+	z_speed = 0;
+
 }
 
 void SpriteApp::Init()
@@ -43,7 +47,7 @@ bool SpriteApp::Update(float frame_time)
 	// get a copy of the current position of the sprite
 	//gef::Vector4 sprite_position = my_sprite_.position();
 
-	my_sprite_.set_position(my_sprite_.position() + (gef::Vector4(1, 0, 0) * frame_time));
+	my_sprite_.set_position(my_sprite_.position() + (gef::Vector4(x_speed, y_speed, z_speed) * frame_time));
 
 	// update the x-axis on the COPY of the current position
 	//sprite_position.set_x(sprite_position.x() + 1);

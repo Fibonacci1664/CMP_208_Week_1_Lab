@@ -31,6 +31,7 @@ private:
 	gef::Font* font_;
 
 	float fps_;
+	float x_speed, y_speed, z_speed;
 	gef::Sprite my_sprite_;
 };
 
