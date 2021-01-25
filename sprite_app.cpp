@@ -41,13 +41,15 @@ bool SpriteApp::Update(float frame_time)
 	// move the sprite along the x-axis
 
 	// get a copy of the current position of the sprite
-	gef::Vector4 sprite_position = my_sprite_.position();
+	//gef::Vector4 sprite_position = my_sprite_.position();
+
+	my_sprite_.set_position(my_sprite_.position() + (gef::Vector4(1, 0, 0) * frame_time));
 
 	// update the x-axis on the COPY of the current position
-	sprite_position.set_x(sprite_position.x() + 1);
+	//sprite_position.set_x(sprite_position.x() + 1);
 
 	// update the sprite with the new position
-	my_sprite_.set_position(sprite_position);
+	//my_sprite_.set_position(sprite_position);
 
 	return true;
 }
@@ -85,15 +87,15 @@ void SpriteApp::DrawHUD()
 	{
 		// display frame rate
 		font_->RenderText(
-			sprite_renderer_,						// sprite renderer to draw the letters
-			gef::Vector4(650.0f, 510.0f, -0.9f),	// position on screen
-			1.0f,									// scale
-			0xffffffff,								// colour ABGR
-			gef::TJ_LEFT,							// justification
-			"FPS: %.1f xpos: %.1f",							// string of text to render
-			fps_,									// any variables used in formatted text string http://www.cplusplus.com/reference/cstdio/printf/
-			my_sprite_.position().x()
+			sprite_renderer_,										// sprite renderer to draw the letters
+			gef::Vector4(650.0f, 510.0f, -0.9f),					// position on screen
+			1.0f,													// scale
+			0xffffffff,												// colour ABGR
+			gef::TJ_LEFT,											// justification
+			"FPS: %.1f xpos: %.1f", fps_, my_sprite_.position().x()	// string of text to render
 			);
+
+		// any variables used in formatted text string http://www.cplusplus.com/reference/cstdio/printf/
 	}
 }
 
