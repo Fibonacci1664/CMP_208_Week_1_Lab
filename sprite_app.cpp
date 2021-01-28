@@ -1,20 +1,13 @@
 #include "sprite_app.h"
-#include <system/platform.h>
-#include <graphics/sprite_renderer.h>
-#include <graphics/font.h>
-#include <maths/math_utils.h>
-
+#include<maths/math_utils.h>
 
 SpriteApp::SpriteApp(gef::Platform& platform) :
 	Application(platform),
 	sprite_renderer_(NULL),
 	font_(NULL)
 {
-	x_speed = 50.0f;
-	y_speed = 0;
-	z_speed = 0;
-	timer = 0.0f;
-	totalTime = 0.0f;
+	timer = 0;
+	totalTime = 0;
 }
 
 void SpriteApp::Init()
@@ -23,39 +16,40 @@ void SpriteApp::Init()
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
 
 	InitFont();
+	initPlayer();
+}
 
-	/*initSprite(&sprite_1, platform_.width() * 0.5f, platform_.height() * 0.5f, 0.0f, 32.0f, 32.0f);
-	initSprite(&sprite_2, platform_.width() * 0.75f, platform_.height() * 0.25f, 0.0f, 32.0f, 32.0f);*/
+void SpriteApp::initPlayer()
+{
+	// Init single player objects.
+	myPlayer_1 = new Player(gef::Vector4(platform_.width() * 0.5f, platform_.height() * 0.5f, 0.0f), 32.0f, 32.0f);
+	//myPlayer_2 = new Player(gef::Vector4(platform_.width() * 0.25f, platform_.height() * 0.25f, 0.0f), 16.0f, 16.0f);
+
+	myPlayer_1->setVelocity(gef::Vector4(1, 0, 0), 10.0f);
+	//myPlayer_2->setVelocity(gef::Vector4(-1, 0, 0), 10.0f);
 
 	/*for (int i = 0; i < 10; ++i)
 	{
-		sprites[i] = initSprite(platform_.width() * 0.5f, platform_.height() * 0.09f * (i + 1), 0.0f, 32.0f, 32.0f);
+		players[i] = new Player(gef::Vector4(platform_.width() * 0.5f, platform_.height() * 0.09f * (i + 1), 0.0f), 32.0f, 32.0f);
 	}*/
 
-	//for (int i = 0; i < 10; ++i)
-	//{
-	//	float randXPos = rand() % 920 + 40;		// Random num between 40-920
-	//	float randYPos = rand() % 504 + 40;		// Random num between 40-504
-
-	//	spritesV.push_back(initSprite(randXPos, randYPos, 0.0f, 32.0f, 32.0f));
-	//}
-
-	// Draw the first sprite.
-	float randXPos = rand() % 920 + 40;		// Random num between 40-920
-	float randYPos = rand() % 504 + 40;		// Random num between 40-504
+	/*for (int i = 0; i < 10; ++i)
+	{
+		players.push_back(new Player(gef::Vector4(platform_.width() * 0.5f, platform_.height() * 0.09f * (i + 1), 0.0f), 32.0f, 32.0f));
+	}*/
 	
-	spritesV.push_back(initSprite(randXPos, randYPos, 0.0f, 32.0f, 32.0f));
-}
+	/*for (int i = 0; i < 10; ++i)
+	{
+		players.push_back(new Player(gef::Vector4(randXPos, randYPos, 0.0f), 32.0f, 32.0f));
+	}*/
 
-gef::Sprite* SpriteApp::initSprite(float xPos, float yPos, float zPos, float width, float height)
-{
-	gef::Sprite* sprite = new gef::Sprite;
+	/*players.push_back(new Player(gef::Vector4(randXPos, randYPos, 0.0f), 32.0f, 32.0f));
 
-	sprite->set_position(xPos, yPos, zPos);
-	sprite->set_width(width);
-	sprite->set_height(height);
-
-	return sprite;
+	for (int i = 0; i < players.size(); ++i)
+	{
+		players[i]->set_rotation(0.0f);
+		players[i]->set_colour(randCol.GetABGR());
+	}*/
 }
 
 void SpriteApp::CleanUp()
@@ -71,56 +65,41 @@ bool SpriteApp::Update(float frame_time)
 {
 	// frame rate = 1 second / frame_delta_time
 	fps_ = 1.0f / frame_time;
-
-	// move the sprite along the x-axis
-
-	// get a copy of the current position of the sprite
-	//gef::Vector4 sprite_position = my_sprite_.position();
-
-	//sprite_1.set_position(sprite_1.position() + (gef::Vector4(x_speed * 0.5f, y_speed, z_speed) * frame_time));
-	//sprite_2.set_position(sprite_2.position() - (gef::Vector4(x_speed * 1.5f, -y_speed, z_speed) * frame_time));
-
-	/*for (int i = 0; i < 10; ++i)
-	{
-		sprites[i].set_position(sprites[i].position() + (gef::Vector4(x_speed * 0.5f, y_speed, z_speed) * frame_time));
-	}*/
 	
-	float randXPos = rand() % 880 + 40;		// Random num between 40-920
-	float randYPos = rand() % 464 + 40;		// Random num between 40-504
+	//totalTime += frame_time;
 
-	timer += frame_time;
-	totalTime += frame_time;
-
-	if (timer > 0.5f)
-	{
-		spritesV.push_back(initSprite(randXPos, randYPos, 0.0f, 32.0f, 32.0f));
-		timer = 0.0f;
-	}
-
-	if (totalTime > 10.0f)
-	{
-		spritesV.erase(spritesV.begin(), spritesV.end());
-		totalTime = 0.0f;
-	}
-
+	myPlayer_1->update(frame_time);
+	//myPlayer_2->update(frame_time);
 
 	/*for (int i = 0; i < 10; ++i)
 	{
-		timer += frame_time;
-
-		if (timer > 0.5f)
-		{
-			spritesV[i].set_position(spritesV[i].position() + (gef::Vector4(x_speed * 0.5f, y_speed, z_speed) * frame_time));
-			timer = 0.0f;
-		}	
+		players[i]->update(frame_time);
 	}*/
 
+	//if (timer > 0.5f)
+	//{
+	//	initPlayer();
+	//	timer = 0;
+	//}
 
-	// update the x-axis on the COPY of the current position
-	//sprite_position.set_x(sprite_position.x() + 1);
+	//if (totalTime > 5.0f)
+	//{
+	//	for (int i = 0; i < players.size(); ++i)
+	//	{
+	//		delete players[i];
+	//		players[i] = nullptr;
+	//	}
 
-	// update the sprite with the new position
-	//my_sprite_.set_position(sprite_position);
+	//	// Resize vector back to zero so the next for loop doesnt run until there is at least 1 element.
+	//	players.resize(0);
+
+	//	totalTime = 0;
+	//}
+
+	//for (int i = 0; i < players.size(); ++i)
+	//{
+	//	players[i]->update(frame_time);
+	//}
 
 	return true;
 }
@@ -130,19 +109,19 @@ void SpriteApp::Render()
 	// draw all sprites between the Begin() and End() calls
 	sprite_renderer_->Begin();
 
-	// draw my sprite here
-	/*sprite_renderer_->DrawSprite(sprite_1);
-	sprite_renderer_->DrawSprite(sprite_2);*/
+	myPlayer_1->render(sprite_renderer_);
+	//myPlayer_2->render(sprite_renderer_);
 
 	/*for (int i = 0; i < 10; ++i)
 	{
-		sprite_renderer_->DrawSprite(sprites[i]);
+		players[i]->render(sprite_renderer_);
 	}*/
 
-	for (int i = 0; i < spritesV.size(); ++i)
+	// Render a sprite every 0.5s
+	/*for (int i = 0; i < players.size(); ++i)
 	{
-		sprite_renderer_->DrawSprite(*spritesV[i]);
-	}
+		players[i]->render(sprite_renderer_);
+	}*/
 
 	DrawHUD();
 	sprite_renderer_->End();
@@ -165,17 +144,20 @@ void SpriteApp::CleanUpFont()
 
 void SpriteApp::DrawHUD()
 {
+	float degrees = gef::RadToDeg(myPlayer_1->rotation());
+
 	if(font_)
 	{
 		// display frame rate
-		font_->RenderText(
-			sprite_renderer_,										// sprite renderer to draw the letters
-			gef::Vector4(50.0f, 510.0f, -0.9f),						// position on screen
-			1.0f,													// scale
-			0xffffffff,												// colour ABGR
-			gef::TJ_LEFT,											// justification
-			"FPS: %.1f", fps_);										// string of text to render
-		
+		// sprite renderer to draw the letters, position on screen, scale, colour ABGR, justification, string of text to render.
+		font_->RenderText(sprite_renderer_, gef::Vector4(20.0f, 20.0f, -0.9f), 0.6f, 0xffffffff, gef::TJ_LEFT, "FPS: %.1f", fps_);
+		font_->RenderText(sprite_renderer_, gef::Vector4(20.0f, 50.0f, -0.9f), 0.6f, 0xffffffff, gef::TJ_LEFT, "xPos: %.1f", myPlayer_1->position().x());
+		font_->RenderText(sprite_renderer_, gef::Vector4(20.0f, 80.0f, -0.9f), 0.6f, 0xffffffff, gef::TJ_LEFT, "yPos: %.1f", myPlayer_1->position().y());
+		font_->RenderText(sprite_renderer_, gef::Vector4(20.0f, 110.0f, -0.9f), 0.6f, 0xffffffff, gef::TJ_LEFT, "zPos: %.1f", myPlayer_1->position().z());
+		font_->RenderText(sprite_renderer_, gef::Vector4(20.0f, 140.0f, -0.9f), 0.6f, 0xffffffff, gef::TJ_LEFT, "Width: %.1f", myPlayer_1->width());
+		font_->RenderText(sprite_renderer_, gef::Vector4(20.0f, 170.0f, -0.9f), 0.6f, 0xffffffff, gef::TJ_LEFT, "Height: %.1f", myPlayer_1->height());
+		font_->RenderText(sprite_renderer_, gef::Vector4(20.0f, 200.0f, -0.9f), 0.6f, 0xffffffff, gef::TJ_LEFT, "Rotational Angle: % .1f", degrees);
+
 		// any variables used in formatted text string http://www.cplusplus.com/reference/cstdio/printf/
 	}
 }

@@ -5,6 +5,11 @@
 #include <graphics/sprite.h>
 #include <maths/vector4.h>
 #include <vector>
+#include <Player.h>
+#include <system/platform.h>
+#include <graphics/sprite_renderer.h>
+#include <graphics/font.h>
+#include <maths/math_utils.h>
 
 // FRAMEWORK FORWARD DECLARATIONS
 namespace gef
@@ -24,7 +29,8 @@ public:
 	void Render();
 private:
 	void InitFont();
-	gef::Sprite* initSprite(float xPos, float yPos, float zPos, float width, float height);
+	//gef::Sprite* initSprite(float xPos, float yPos, float zPos, float width, float height);
+	void initPlayer();
 	void CleanUpFont();
 	void DrawHUD();
 
@@ -36,12 +42,11 @@ private:
 	float timer;
 	float totalTime;
 
-	/*gef::Sprite sprite_1;
-	gef::Sprite sprite_2;*/
+	Player* myPlayer_1;
+	//Player* myPlayer_2;
 
-	//gef::Sprite sprites[10];
-
-	std::vector<gef::Sprite*> spritesV;
+	//Player* players[10];
+	//std::vector<Player*> players;
 };
 
 #endif // _sprite_app_H
