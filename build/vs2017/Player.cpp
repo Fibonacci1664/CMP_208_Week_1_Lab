@@ -33,15 +33,11 @@ void Player::update(float dt)
 
 	if (timer > 0.5)
 	{
-		int randXPos = rand() % 880 + 40;		// Random num between 40-920
-		int randYPos = rand() % 464 + 40;		// Random num between 40-504
-
 		int randColValue1 = rand() % 255;
 		int randColValue2 = rand() % 255;
 		int randColValue3 = rand() % 255;
-		int randAlphaValue = rand() % 255;
 
-		gef::Colour randCol(randColValue1, randColValue2, randColValue3, randAlphaValue);
+		gef::Colour randCol(randColValue1, randColValue2, randColValue3, 255);
 
 		set_colour(randCol.GetRGBA());
 
@@ -70,19 +66,27 @@ void Player::initPlayer()
 
 void Player::move(float dt)
 {
+	if (position().x() + (width() * 0.5) > 960 && velocity.x() > 0
+		|| position().x() - (width() * 0.5) < 0 && velocity.x() < 0)
+	{
+		velocity = gef::Vector4(-velocity.x(), velocity.y(), velocity.z());
+	}
+
+	if (position().y() + (width() * 0.5) > 544 && velocity.y() > 0
+		|| position().y() - (width() * 0.5) < 0 && velocity.y() < 0)
+	{
+		velocity = gef::Vector4(velocity.x(), -velocity.y(), velocity.z());
+	}
+
 	position_ += velocity * dt;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void Player::jump()
-{
-
-}
-
 
 
 ////////////////////////// GETTERS AND SETTERS ///////////////////////////
+
 
 void Player::setSpeed(float newSpeed)
 {

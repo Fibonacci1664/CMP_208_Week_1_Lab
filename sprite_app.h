@@ -27,6 +27,7 @@ public:
 	void CleanUp();
 	bool Update(float frame_time);
 	void Render();
+	
 private:
 	void InitFont();
 	//gef::Sprite* initSprite(float xPos, float yPos, float zPos, float width, float height);
@@ -41,12 +42,13 @@ private:
 	float x_speed, y_speed, z_speed;
 	float timer;
 	float totalTime;
+	
 
-	Player* myPlayer_1;
+	//Player* myPlayer_1;
 	//Player* myPlayer_2;
 
 	//Player* players[10];
-	//std::vector<Player*> players;
+	std::vector<Player*> players;
 };
 
 #endif // _sprite_app_H

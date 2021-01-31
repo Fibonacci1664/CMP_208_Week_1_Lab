@@ -22,7 +22,6 @@ protected:
 private:
 	void initPlayer();
 	void move(float dt);
-	void jump();
 
 	float speed;
 	gef::Vector4 velocity;
